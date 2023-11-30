@@ -26,7 +26,7 @@ export class ProductController {
   @Post()
   async createProduct(@Body() createProductDto: CreateProductDto) {
     await this.productService.createProduct(createProductDto);
-    return sendSuccess(null, 'Products created successfully');
+    return sendSuccess(null, 'Product created successfully');
   }
 
   @UseGuards(JwtGuard)

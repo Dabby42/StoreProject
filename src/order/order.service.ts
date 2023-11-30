@@ -34,10 +34,10 @@ export class OrderService {
     return this.cacheService.cachedData(
       `${this.cacheKeyBase}${page}_${limit}`,
       async () => {
-
         const skip = (+page - 1) * +limit;
 
-        const [orders, count] = await Promise.all([
+        // eslint-disable-next-line prefer-const
+        let [orders, count] = await Promise.all([
           this.orderRepository.find({
             skip,
             take: +limit,
@@ -45,16 +45,17 @@ export class OrderService {
           }),
           this.orderRepository.count(),
         ]);
-        const filteredOrders = orders.filter(
-          (order) =>
-            order.created_at >= new Date(start_date) &&
-            order.created_at <= new Date(end_date),
-        );
-
+        if (start_date && end_date) {
+          orders = orders.filter(
+            (order) =>
+              order.created_at >= new Date(start_date) &&
+              order.created_at <= new Date(end_date),
+          );
+        }
         const pages = Math.ceil(count / +limit);
 
         return {
-          filteredOrders,
+          orders,
           count,
           current_page: +page,
           pages,

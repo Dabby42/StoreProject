@@ -34,7 +34,7 @@ export class CategoriesController {
   @Get()
   async getAllCategories() {
     const categories = await this.categoriesService.getAllCategories();
-    return sendSuccess(categories, 'All categories retrieved successfully');
+    return sendSuccess(categories, 'All categories retrieved successfully.');
   }
 
   @UseGuards(GeneralGuard)

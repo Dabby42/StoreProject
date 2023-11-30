@@ -10,7 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductQueryDto } from './dto/product-query.dto';
 import { CacheService } from '../cache/cache.service';
-import { ObjectId } from "mongodb";
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class ProductService {
