@@ -1,0 +1,43 @@
+# Base Docker Compose File. We assume usage of redis by most (all) APIs due to usage of OAuth by all services
+# We also assume MySQL usage in our code.
+version: '3.1'
+
+services:
+  redis:
+    container_name: store_redis
+    image: redis
+    ports:
+      - "6379"
+    networks:
+      - main_network
+  rabbitmq:
+    container_name: store_rabbitmq
+    image: rabbitmq:3.12.1-management-alpine
+    ports:
+      - "5672"
+      - "15672"
+    networks:
+      - main_network
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - main_network
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+    networks:
+      - main_network
+
+networks:
+  main_network:
+    driver: bridge
